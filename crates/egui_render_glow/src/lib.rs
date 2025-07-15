@@ -317,13 +317,6 @@ impl Painter {
                     c.pixels.iter().flat_map(egui::Color32::to_array).collect(),
                     c.size,
                 ),
-                egui::ImageData::Font(font_image) => (
-                    font_image
-                        .srgba_pixels(None)
-                        .flat_map(|c| c.to_array())
-                        .collect(),
-                    font_image.size,
-                ),
             };
             if let Some(pos) = delta.pos {
                 glow_context.tex_sub_image_2d(
@@ -335,7 +328,7 @@ impl Painter {
                     size[1] as i32,
                     glow::RGBA,
                     glow::UNSIGNED_BYTE,
-                    glow::PixelUnpackData::Slice(&pixels),
+                    glow::PixelUnpackData::Slice(Some(&pixels)),
                 )
             } else {
                 match texture_id {
@@ -358,7 +351,7 @@ impl Painter {
                     0,
                     glow::RGBA,
                     glow::UNSIGNED_BYTE,
-                    Some(&pixels),
+                    PixelUnpackData::Slice(Some(&pixels)),
                 );
             }
             glow_error!(glow_context);

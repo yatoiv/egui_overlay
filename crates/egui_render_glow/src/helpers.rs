@@ -325,7 +325,7 @@ pub fn default_gl_debug_callback(
 /// enables debug callbacks, and sets the provided callback.
 pub unsafe fn enable_debug(
     gl: &mut glow::Context,
-    debug_callback: impl FnMut(u32, u32, u32, u32, &str) + 'static,
+    debug_callback: impl Fn(u32, u32, u32, u32, &str) + Send + Sync + 'static,
 ) {
     gl.enable(glow::DEBUG_OUTPUT);
     gl.enable(glow::DEBUG_OUTPUT_SYNCHRONOUS);
